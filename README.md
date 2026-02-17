@@ -1,37 +1,34 @@
 # Nexmark (Smart Bookmark App)
 
-Nexmark is a production-style bookmark manager built with Next.js App Router and Supabase.
-It uses Google OAuth only, stores private bookmarks per user, and syncs changes in real time across tabs.
+Nexmark is a NEXT-Generation bookmark manager built with Next.js App Router and Supabase.
+It uses Google OAuth only to Sigin, stores private bookmarks per user, and syncs changes in real time across multiple tabs.
 
 ## Project Overview
 
-This app was built to practice full-stack product engineering with real-world concerns:
+This app fulfills the concerns:
 
-- secure authentication (no password handling in app code)
+- secure authentication (Google OAuth)
 - database-level privacy (RLS)
-- real-time UX
-- deployment-ready structure
-- maintainable UI system
+- real-time changes over multiple tabs
+- private to each user and secured
+- UI/UX Friendly
 
 ## Core Features
 
 - Google OAuth login with Supabase Auth
-- Private bookmarks (user A cannot access user B data)
+- Private bookmarks (user A cannot access user B data as mentioned)
 - Add bookmark (`title + url`)
 - Delete bookmark
 - Real-time bookmark list sync between tabs
-- Real-time bookmark count sync
-- Responsive UI with global brand/logo and glass/liquid visual theme
+- Real-time bookmark count added
+- Responsive UI with global brand and logo with simple visual theme
 
 ## Tech Stack
 
 - Next.js 16 (App Router)
 - React 19
-- Tailwind CSS v4
+- Tailwind CSS 
 - Supabase
-  - Auth (Google provider)
-  - Postgres
-  - Realtime
 - Vercel (deployment)
 
 ## Architecture
@@ -119,7 +116,6 @@ In Supabase:
 
 - enable Google provider in Auth settings
 - set local Site URL: `http://localhost:3000`
-- allow redirect: `http://localhost:3000/auth/callback`
 
 In Google Cloud:
 
@@ -143,20 +139,6 @@ npm run build
 npm run start
 npm run lint
 ```
-
-## Deployment (Vercel)
-
-1. Push repository to GitHub.
-2. Import repo in Vercel.
-3. Add env vars in Vercel:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Deploy.
-5. Update Supabase Auth URL config for production:
-   - Site URL: your Vercel URL
-   - Redirect allow list includes:
-     - `https://<your-vercel-domain>/auth/callback`
-6. Test login, add/delete, and realtime sync in production.
 
 ## Problems Faced and Solutions
 
@@ -194,10 +176,8 @@ Fix:
 
 - enabled realtime publication (`03_enable_realtime.sql`)
 - set replica identity full (`04_realtime_tuning.sql`)
-- added BroadcastChannel for immediate same-browser tab updates
-- added initial refresh on subscription
 
-### 4) Input border visibility on light/glass UI
+### 4) Minor Fixable changes during UI Improvements
 
 Problem:
 
@@ -208,10 +188,6 @@ Fix:
 - improved shared `.field` styles with stronger border, hover, and focus states.
 
 ## Notes
-
-- `.env.local` is ignored by git via `.gitignore`.
-- Use only the anon public key in client-facing env vars.
-- RLS is mandatory for privacy; do not disable it.
 
 ---
 
