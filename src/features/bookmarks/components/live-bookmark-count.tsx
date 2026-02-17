@@ -25,7 +25,7 @@ export function LiveBookmarkCount({ initialCount, userId }: LiveBookmarkCountPro
     const { count: latestCount, error } = await supabase
       .from("bookmarks")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", userId);
+      .filter("user_id", "eq", userId);
 
     if (!error && typeof latestCount === "number") {
       setCount(latestCount);

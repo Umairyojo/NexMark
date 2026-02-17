@@ -6,8 +6,11 @@ import { StatCard } from "@/components/stat-card";
 import { BookmarksLiveList } from "@/features/bookmarks/components/bookmarks-live-list";
 import { LiveBookmarkCount } from "@/features/bookmarks/components/live-bookmark-count";
 import { createClient } from "@/lib/supabase/server";
+import type { Database } from "@/types/database";
 
 export default async function DashboardPage() {
+  type Bookmark = Database["public"]["Tables"]["bookmarks"]["Row"];
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -19,9 +22,10 @@ export default async function DashboardPage() {
 
   const { data: bookmarks } = await supabase
     .from("bookmarks")
-    .select("id, title, url, created_at")
-    .eq("user_id", user.id)
+    .select()
+    .filter("user_id", "eq", user.id)
     .order("created_at", { ascending: false });
+  const typedBookmarks = (bookmarks ?? []) as unknown as Bookmark[];
 
   return (
     <main className="app-shell">
@@ -29,7 +33,7 @@ export default async function DashboardPage() {
         <div className="grid gap-5 rounded-2xl border border-sky-200 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 p-5 sm:grid-cols-[1fr_auto] sm:items-end">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Bookmark Command Center
+              My Bookmarks Hub
             </h1>
             <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
               Session active for <span className="font-semibold text-slate-900">{user.email}</span>
@@ -38,13 +42,13 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-2 gap-3 sm:w-72">
             <div className="rounded-xl border border-sky-200 bg-white p-3">
               <p className="font-mono text-xs text-sky-700">Bookmarks</p>
-              <LiveBookmarkCount initialCount={bookmarks?.length ?? 0} userId={user.id} />
+              <LiveBookmarkCount initialCount={typedBookmarks.length} userId={user.id} />
             </div>
             <StatCard label="Sync" value="Realtime Active" tone="green" />
           </div>
         </div>
 
-        <BookmarksLiveList initialBookmarks={bookmarks ?? []} userId={user.id} />
+        <BookmarksLiveList initialBookmarks={typedBookmarks} userId={user.id} />
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link

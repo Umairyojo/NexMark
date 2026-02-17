@@ -31,15 +31,7 @@ export type Database = {
           url?: string;
           user_id?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: "bookmarks_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

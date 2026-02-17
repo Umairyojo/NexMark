@@ -69,12 +69,12 @@ export function BookmarksLiveList({ initialBookmarks, userId }: BookmarksLiveLis
   const fetchLatestBookmarks = useCallback(async () => {
     const { data, error } = await supabase
       .from("bookmarks")
-      .select("id, title, url, created_at, user_id")
-      .eq("user_id", userId)
+      .select()
+      .filter("user_id", "eq", userId)
       .order("created_at", { ascending: false });
 
     if (!error && data) {
-      setBookmarks(data);
+      setBookmarks(data as unknown as Bookmark[]);
     }
   }, [supabase, userId]);
 
@@ -175,7 +175,7 @@ export function BookmarksLiveList({ initialBookmarks, userId }: BookmarksLiveLis
         url: trimmedUrl,
         user_id: userId,
       })
-      .select("id, title, url, created_at, user_id")
+      .select()
       .single();
 
     setIsSubmitting(false);
@@ -185,8 +185,9 @@ export function BookmarksLiveList({ initialBookmarks, userId }: BookmarksLiveLis
       return;
     }
 
-    upsertBookmark(data);
-    broadcastRef.current?.postMessage({ type: "UPSERT", bookmark: data });
+    const typedData = data as unknown as Bookmark;
+    upsertBookmark(typedData);
+    broadcastRef.current?.postMessage({ type: "UPSERT", bookmark: typedData });
     setTitle("");
     setUrl("");
     setStatus("created");
@@ -201,8 +202,8 @@ export function BookmarksLiveList({ initialBookmarks, userId }: BookmarksLiveLis
     const { error } = await supabase
       .from("bookmarks")
       .delete()
-      .eq("id", bookmarkId)
-      .eq("user_id", userId);
+      .filter("id", "eq", bookmarkId)
+      .filter("user_id", "eq", userId);
 
     if (error) {
       setBookmarks(previous);

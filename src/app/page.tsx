@@ -28,11 +28,10 @@ export default async function Home({ searchParams }: HomePageProps) {
           <div>
             <p className="section-tag">Smart Bookmark Platform</p>
             <h1 className="mt-4 max-w-xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-              Keep your links organized, private, and instantly synced.
+              Bookmark your links organized, private, and instantly synced.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Built with Google OAuth, Supabase RLS, and realtime events so your data stays secure
-              per user and updates across tabs without refresh.
+              Powered by Google OAuth and Supabase, Nexmark keeps your bookmarks private, Secured, user-isolated, and synced across tabs in real time — no refresh required.
             </p>
 
             {params.auth === "required" ? (
@@ -77,14 +76,14 @@ export default async function Home({ searchParams }: HomePageProps) {
             ) : (
               <>
                 <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-                  Continue with Google to access your private bookmark workspace.
+                  Sign in with Google to unlock your secure, personal bookmark hub.
                 </p>
                 <form action={signInWithGoogle} className="mt-6">
                   <button
                     type="submit"
                     className="btn-primary inline-flex h-11 items-center rounded-xl px-5 text-sm font-semibold transition"
                   >
-                    Continue with Google
+                    Sign in with Google
                   </button>
                 </form>
               </>
@@ -97,20 +96,20 @@ export default async function Home({ searchParams }: HomePageProps) {
             </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">Nexmark</h2>
             <p className="mt-2 text-sm leading-6 text-slate-700">
-              Next-gen bookmarks - intelligent, secure &amp; powerful with real-time sync.
+              A modern bookmark platform designed for clarity, speed, and privacy. 
+              Smart organization meets real-time sync — built for focused creators &amp; developers.
             </p>
             <div className="mt-4 rounded-xl border border-blue-200 bg-white/80 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
                 About the Developer
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-700">
-                Crafted with a product-first mindset: secure by design, clean to use, and built for
-                real-world reliability.
+                Built with a product-first philosophy — secure by design, engineered for reliability, and crafted with attention to detail. — <b>Umair Ahmed</b>
               </p>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3">
               <StatCard label="Stack" value="Next.js + Supabase" />
-              <StatCard label="Mode" value="Production Ready" />
+              <StatCard label="Mode" value="Realtime Enabled" />
             </div>
           </aside>
         </div>
