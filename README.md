@@ -140,42 +140,41 @@ npm run start
 npm run lint
 ```
 
-## Problems Faced and Solutions
+## Problems I ran into (and how I fixed them)
 
-### 1) Vercel build TypeScript failures in Supabase queries
-
-Problem:
-
-- local dev worked, but `next build` failed in strict typing around query/filter chains.
-
-Fix:
-
-- simplified query patterns (`filter(...)`)
-- removed fragile select-string parsing in critical places
-- added safe runtime-focused typing where needed
-- hardened env typing in `src/lib/supabase/config.ts`
-
-### 2) Cookie mutation runtime error on server-rendered pages
+### 1) TypeScript build failures on Vercel
 
 Problem:
 
-- Next.js error: cookies can only be modified in Server Actions/Route Handlers.
+- Everything worked fine in local dev, but next build kept failing because of strict typing around Supabase query chains.
 
 Fix:
 
-- wrapped cookie writes in `src/lib/supabase/server.ts` with safe try/catch
+- simplified those queries
+- removed fragile select-string parsing 
+- added safe runtime-focused typing where ever was needed
+
+### 2) Cookie mutation errors on server-rendered pages
+
+Problem:
+
+- Next.js throws an error if you try to set cookies outside of Server Actions or Route Handlers. Some of the Supabase auth helpers were doing exactly that.
+
+Fix:
+
+- wrapped cookie writes with safe try/catch
 - kept refresh writes handled in middleware
 
-### 3) Realtime delay/inconsistency across tabs
+### 3) Realtime updates were slow and inconsistent
 
 Problem:
 
-- list updates could lag, especially on delete events.
+- Delete events in particular would sometimes lag noticeably before the other tab caught up.
 
 Fix:
 
-- enabled realtime publication (`03_enable_realtime.sql`)
-- set replica identity full (`04_realtime_tuning.sql`)
+- enabled realtime publication in 03_enable_realtime.sql
+- set replica identity FULL in 04_realtime_tuning.sql
 
 ### 4) Minor Fixable changes during UI Improvements
 
@@ -185,7 +184,7 @@ Problem:
 
 Fix:
 
-- improved shared `.field` styles with stronger border, hover, and focus states.
+- improved shared field styles with stronger border, hover, and focus states.
 
 ## Notes
 
